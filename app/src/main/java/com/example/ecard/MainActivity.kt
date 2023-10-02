@@ -19,10 +19,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val textBox: TextView = findViewById(R.id.Text_Box)
         textBox.text = "NOPE! :("
 
-        Log.v("Aayush","HerePP")
+        Log.v("eCard","Main: Starting Biometric")
 
         val biometricPromptInfo = BiometricPrompt.Builder(this).setTitle("Log In").setAllowedAuthenticators(DEVICE_CREDENTIAL or BIOMETRIC_STRONG).build()
 
@@ -38,6 +39,8 @@ class MainActivity : AppCompatActivity() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult?) {
                 super.onAuthenticationSucceeded(result)
                 textBox.text = "Done5"
+                Log.v("eCard","Main: Starting Main Screen")
+                startActivity(Intent(this@MainActivity, MainScreen::class.java))
             }
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
                 super.onAuthenticationError(errorCode, errString)
@@ -45,14 +48,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
         biometricPromptInfo.authenticate(cancelSignal, executor, authenticationCallBack)
-        var intentFilter = IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)
-
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        Log.v("Aayush","Here1")
-        super.onNewIntent(intent)
-        Log.v("Aayush","Here2")
-        startActivity(Intent(this, MainScreen::class.java))
     }
 }
