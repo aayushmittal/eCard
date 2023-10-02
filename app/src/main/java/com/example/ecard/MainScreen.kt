@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.content.IntentFilter
 import android.nfc.NfcAdapter
+import android.nfc.Tag
 import android.nfc.tech.IsoDep
 import android.nfc.tech.MifareClassic
 import android.nfc.tech.MifareUltralight
@@ -30,7 +31,12 @@ class MainScreen : AppCompatActivity() {
         if (action.equals(NfcAdapter.ACTION_TAG_DISCOVERED)
             || action.equals(NfcAdapter.ACTION_TECH_DISCOVERED))
         {
-            Log.v("eCard", "New Intent")
+            var tag : Tag ?= intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
+            Log.v("eCard", tag.toString())
+            var nfcA : NfcA = NfcA.get(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG))
+            Log.v("eCard", nfcA.toString())
+            var isodep : IsoDep = IsoDep.get(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG))
+            Log.v("eCard", isodep.toString())
             textBox.text = "YESSS! :)"
         }
     }
@@ -77,4 +83,3 @@ class MainScreen : AppCompatActivity() {
         NfcAdapter.getDefaultAdapter(this).enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListsArray)
     }
 }
-
