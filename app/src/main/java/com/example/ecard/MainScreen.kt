@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.nfc.NfcAdapter
 import android.nfc.tech.IsoDep
+import android.nfc.tech.MifareClassic
+import android.nfc.tech.MifareUltralight
 import android.nfc.tech.Ndef
 import android.nfc.tech.NfcA
 import android.nfc.tech.NfcB
@@ -22,6 +24,15 @@ class MainScreen : AppCompatActivity() {
 
         val textBox: TextView = findViewById(R.id.textView)
         textBox.text = "No! :("
+
+        var action : String ?= intent.action
+
+        if (action.equals(NfcAdapter.ACTION_TAG_DISCOVERED)
+            || action.equals(NfcAdapter.ACTION_TECH_DISCOVERED))
+        {
+            Log.v("eCard", "New Intent")
+            textBox.text = "YESSS! :)"
+        }
     }
     public override fun onPause() {
         super.onPause()
@@ -60,16 +71,10 @@ class MainScreen : AppCompatActivity() {
         techListsArray = techListsArray.plus(arrayOf(arrayOf<String>(NfcV::class.java.name)))
         techListsArray = techListsArray.plus(arrayOf(arrayOf<String>(IsoDep::class.java.name)))
         techListsArray = techListsArray.plus(arrayOf(arrayOf<String>(Ndef::class.java.name)))
+        techListsArray = techListsArray.plus(arrayOf(arrayOf<String>(MifareClassic::class.java.name)))
+        techListsArray = techListsArray.plus(arrayOf(arrayOf<String>(MifareUltralight::class.java.name)))
         intentFiltersArray =  arrayOf(tags)
         NfcAdapter.getDefaultAdapter(this).enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListsArray)
-    }
-
-    public override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-
-        Log.v("eCard", "New Intent")
-        val textBox: TextView = findViewById(R.id.textView)
-        textBox.text = "YESSS! :)"
     }
 }
 
