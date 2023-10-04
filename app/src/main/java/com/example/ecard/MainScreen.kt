@@ -15,6 +15,7 @@ import android.nfc.tech.NfcF
 import android.nfc.tech.NfcV
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.TextView
 
@@ -23,21 +24,24 @@ class MainScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_screen)
 
-        val textBox: TextView = findViewById(R.id.textView)
-        textBox.text = "No! :("
+        val scanStatus : TextView = findViewById(R.id.Scan_Status)
+        scanStatus.text = "Tap to Scan"
 
         var action : String ?= intent.action
 
         if (action.equals(NfcAdapter.ACTION_TAG_DISCOVERED)
             || action.equals(NfcAdapter.ACTION_TECH_DISCOVERED))
         {
-            var tag : Tag ?= intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
-            Log.v("eCard", tag.toString())
-            var nfcA : NfcA = NfcA.get(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG))
-            Log.v("eCard", nfcA.toString())
-            var isodep : IsoDep = IsoDep.get(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG))
-            Log.v("eCard", isodep.toString())
-            textBox.text = "YESSS! :)"
+//            var tag : Tag ?= intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
+//            Log.v("eCard", tag.toString())
+//            var nfcA : NfcA = NfcA.get(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG))
+//            Log.v("eCard", nfcA.toString())
+//            var isodep : IsoDep = IsoDep.get(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG))
+//            Log.v("eCard", isodep.toString())
+            scanStatus.text = "Scanned"
+            Handler().postDelayed(Runnable {
+                super.onBackPressed()
+            }, 2000)
         }
     }
     public override fun onPause() {
